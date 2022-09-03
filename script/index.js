@@ -1,41 +1,55 @@
 const allNews = async () => {
-    const res = await fetch(`https://openapi.programming-hero.com/api/news/categories`);
-    const data = await res.json();
-    navigateNews(data.data.news_category)
+  const res = await fetch(`https://openapi.programming-hero.com/api/news/categories`);
+  const data = await res.json();
+  navigateNews(data.data.news_category)
 }
 
 allNews();
 function navigateNews(allNewsCategories) {
-    const newsNavigation = document.getElementById('news-navigation');
-    
-    for (const key in allNewsCategories) {
-        const newsNavigationLi = document.createElement('li');
-        newsNavigationLi.classList.add('d-inline');
-        newsNavigationLi.classList.add();
-        if (Object.hasOwnProperty.call(allNewsCategories, key)) {
-            const element = allNewsCategories[key];
-            newsNavigationLi.innerHTML = `
+  const newsNavigation = document.getElementById('news-navigation');
+
+  for (const key in allNewsCategories) {
+    const newsNavigationLi = document.createElement('li');
+    newsNavigationLi.classList.add('d-inline');
+    newsNavigationLi.classList.add();
+    if (Object.hasOwnProperty.call(allNewsCategories, key)) {
+      const element = allNewsCategories[key];
+      newsNavigationLi.innerHTML = `
                 <button class="btn btn-outline-info" onclick="categoryWiseNews('${element.category_id}')">${element.category_name}</button>
             `;
-            newsNavigation.appendChild(newsNavigationLi);
-        }
-        
+      newsNavigation.appendChild(newsNavigationLi);
     }
+
+  }
 }
 function categoryWiseNews(categoryID) {
-    fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
-        .then(res => res.json())
+  toggleSpinner(true);
+  fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
+    .then(res => res.json())
     .then(data => displaycategoryWiseNews(data.data))
-    
-    
+
+
 }
 const displaycategoryWiseNews = (singleNewsCategory) => {
-    const newsCategoryContainer = document.getElementById('news-category-container');
-    newsCategoryContainer.textContent = '';
-    for (const news of singleNewsCategory) {
-        console.log(news)
-        const newsDiv = document.createElement('div');
-        newsDiv.innerHTML = `
+  console.log(singleNewsCategory)
+  const newsCategoryContainer = document.getElementById('news-category-container');
+
+  newsCategoryContainer.textContent = '';
+  const noNewsMessage = document.getElementById('no-news-message');
+
+  if (singleNewsCategory.length === 0) {
+    noNewsMessage.classList.remove('d-none');
+  }
+  else {
+    noNewsMessage.classList.add('d-none');
+  }
+
+  singleNewsCategory.forEach(news => {
+
+    const newsDiv = document.createElement('div');
+
+
+    newsDiv.innerHTML = `
         <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-4">
@@ -44,14 +58,41 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">${news.title}</h5>
-              <p class="card-text">${news.details}</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              <p class="card-text news-details p-2">${news.details}</p>
+              <div class="card-text row justify-content-center align-items-center">
+                  <div class="col-3">
+               <img src="${news.author.img}" class="w-25 rounded-5 img-fluid" alt="">
+                  <p>Author: ${news.author.name ? news.author.name : 'Anonymous'}</p>
+                    <p>Published: ${news.author.published_date ? news.author.published_date.slice(0,11) : 'Unavailable'}</p>
+                  </div>
+                  <div class="col-3">
+                    <p>Views: ${news.total_view ? news.total_view : 'No views'}</p>
+                  </div>
+                  <div class="col-3">
+                    <p>Ratings: ${news.rating.number ? news.rating.number : 'Unavailable'}</p>
+                  </div>
+                  <div class="col-3">
+                    <a class="text-decoration-none">Continue Reading</a>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
       </div>  
         `;
-        newsCategoryContainer.appendChild(newsDiv);
-    }
-    
+    newsCategoryContainer.appendChild(newsDiv);
+  });
+
+
+  toggleSpinner(false);
+
+}
+function toggleSpinner(isSpinning) {
+  const spinning = document.getElementById('spinner');
+  if (isSpinning) {
+    spinning.classList.remove('d-none');
+  }
+  else {
+    spinning.classList.add('d-none');
+  }
 }
