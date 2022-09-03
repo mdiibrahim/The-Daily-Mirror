@@ -35,14 +35,29 @@ const loadDetailedNews = (newsId) => {
     .then(res => res.json())
     .then(data => displayDetailedNews(data.data[0]))
 }
-const displayDetailedNews =  (detailNews) => {
+const displayDetailedNews = (detailNews) => {
   const modalTitle = document.getElementById('staticBackdropLabel');
   modalTitle.innerText = `${detailNews.title}`;
   const detailNewsBody = document.getElementById("detail-news-body");
-  detailNewsBody.innerText = `${detailNews.details}`;
+  detailNewsBody.innerHTML = `
+  <img src="${detailNews.image_url}" class="img-fluid rounded-start" alt="...">
+  <p>${detailNews.details}</p>
+  <div class="row justify-content-center align-items-center">
+                  <div class="col-4">
+               <img src="${detailNews.author.img}" class="w-25 rounded-5 img-fluid" alt="">
+                  <p>Author: ${detailNews.author.name ? detailNews.author.name : 'Anonymous'}</p>
+                    <p>Published: ${detailNews.author.published_date ? detailNews.author.published_date : 'Unavailable'}</p>
+                  </div>
+                  <div class="col-4">
+                    <p>Views: ${detailNews.total_view ? detailNews.total_view : 'No views'}</p>
+                  </div>
+                  <div class="col-4">
+                    <p>Ratings: ${detailNews.rating.number ? detailNews.rating.number : 'Unavailable'}</p>
+                  </div>
+              </div>
+          `;
 }
 const displaycategoryWiseNews = (singleNewsCategory) => {
-  console.log(singleNewsCategory)
   const newsCategoryContainer = document.getElementById('news-category-container');
 
   newsCategoryContainer.textContent = '';
@@ -74,7 +89,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
                   <div class="col-3">
                <img src="${news.author.img}" class="w-25 rounded-5 img-fluid" alt="">
                   <p>Author: ${news.author.name ? news.author.name : 'Anonymous'}</p>
-                    <p>Published: ${news.author.published_date ? news.author.published_date.slice(0,11) : 'Unavailable'}</p>
+                    <p>Published: ${news.author.published_date ? news.author.published_date.slice(0, 11) : 'Unavailable'}</p>
                   </div>
                   <div class="col-3">
                     <p>Views: ${news.total_view ? news.total_view : 'No views'}</p>
