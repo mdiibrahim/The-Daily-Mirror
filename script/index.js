@@ -5,6 +5,7 @@ const allNews = async () => {
 }
 
 allNews();
+
 function navigateNews(allNewsCategories) {
   const newsNavigation = document.getElementById('news-navigation');
 
@@ -17,8 +18,12 @@ function navigateNews(allNewsCategories) {
       newsNavigationLi.innerHTML = `
                 <button class="btn btn-outline-info" onclick="categoryWiseNews('${element.category_id}')">${element.category_name}</button>
             `;
+
       newsNavigation.appendChild(newsNavigationLi);
+
+
     }
+
 
   }
 }
@@ -59,7 +64,12 @@ const displayDetailedNews = (detailNews) => {
 }
 const displaycategoryWiseNews = (singleNewsCategory) => {
   const newsCategoryContainer = document.getElementById('news-category-container');
-
+  const singleNewsCategoryCounter = document.getElementById('news-counter');
+  singleNewsCategoryCounter.innerHTML = `
+  <p>${singleNewsCategory.length} items are found.
+  
+  </p>
+  `;
   newsCategoryContainer.textContent = '';
   const noNewsMessage = document.getElementById('no-news-message');
 
@@ -76,7 +86,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
 
 
     newsDiv.innerHTML = `
-        <div class="card mb-3">
+        <div class="card mb-3 shadow mb-5 bg-body rounded">
         <div class="row g-0">
           <div class="col-md-3">
             <img src="${news.thumbnail_url}" class="img-fluid rounded-start" alt="...">
