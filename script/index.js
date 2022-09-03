@@ -98,7 +98,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
                     <p>Ratings: ${news.rating.number ? news.rating.number : 'Unavailable'}</p>
                   </div>
                   <div class="col-3">
-                    <button onclick="loadDetailedNews('${news._id}')" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Continue Reading</button>
+                    <button onclick="loadDetailedNews('${news._id}')" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Continue...<i class="fa fa-circle-right"></i></button>
                   </div>
               </div>
             </div>
