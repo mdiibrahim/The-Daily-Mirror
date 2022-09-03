@@ -30,6 +30,17 @@ function categoryWiseNews(categoryID) {
 
 
 }
+const loadDetailedNews = (newsId) => {
+  fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
+    .then(res => res.json())
+    .then(data => displayDetailedNews(data.data[0]))
+}
+const displayDetailedNews =  (detailNews) => {
+  const modalTitle = document.getElementById('staticBackdropLabel');
+  modalTitle.innerText = `${detailNews.title}`;
+  const detailNewsBody = document.getElementById("detail-news-body");
+  detailNewsBody.innerText = `${detailNews.details}`;
+}
 const displaycategoryWiseNews = (singleNewsCategory) => {
   console.log(singleNewsCategory)
   const newsCategoryContainer = document.getElementById('news-category-container');
@@ -52,10 +63,10 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
     newsDiv.innerHTML = `
         <div class="card mb-3">
         <div class="row g-0">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <img src="${news.thumbnail_url}" class="img-fluid rounded-start" alt="...">
           </div>
-          <div class="col-md-8">
+          <div class="col-md-9">
             <div class="card-body">
               <h5 class="card-title">${news.title}</h5>
               <p class="card-text news-details p-2">${news.details}</p>
@@ -72,7 +83,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
                     <p>Ratings: ${news.rating.number ? news.rating.number : 'Unavailable'}</p>
                   </div>
                   <div class="col-3">
-                    <a class="text-decoration-none">Continue Reading</a>
+                    <button onclick="loadDetailedNews('${news._id}')" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Continue Reading</button>
                   </div>
               </div>
             </div>
