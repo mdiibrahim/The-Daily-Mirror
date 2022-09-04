@@ -9,7 +9,7 @@ const allNews = async () => {
   }
 
   catch (error) {
-    document.write("Cann't get the url", error);
+    document.write("Cann't get the url: ", error);
   }
 
 }
@@ -42,29 +42,22 @@ function navigateNews(allNewsCategories) {
 //loaded category wise news 
 function categoryWiseNews(categoryID) {
   toggleSpinner(true);
-  try {
-    fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
-      .then(res => res.json())
-      .then(data => displaycategoryWiseNews(data.data))
-  }
-  catch (error) {
-    document.write("Cann't get the url", error);
-  }
+ 
+  fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
+    .then(res => res.json())
+    .then(data => displaycategoryWiseNews(data.data))
+    .catch(error => document.write("Cann't get the url: ", error));
 
 
 }
 
 // loaded detailed news for modal
 const loadDetailedNews = (newsId) => {
-  try {
+ 
     fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
       .then(res => res.json())
       .then(data => displayDetailedNews(data.data[0]))
-  }
-
-  catch (error) {
-    document.write("Cann't get the url", error);
-  }
+      .catch(error => document.write("Cann't get the url: ", error));
 }
 
 // in modal, display detailed news
