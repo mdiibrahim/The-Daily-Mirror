@@ -1,3 +1,5 @@
+// The news api loaded
+
 const allNews = async () => {
   const res = await fetch(`https://openapi.programming-hero.com/api/news/categories`);
   const data = await res.json();
@@ -5,6 +7,8 @@ const allNews = async () => {
 }
 
 allNews();
+
+// News Categories Navigation Bar
 
 function navigateNews(allNewsCategories) {
   const newsNavigation = document.getElementById('news-navigation');
@@ -27,6 +31,7 @@ function navigateNews(allNewsCategories) {
 
   }
 }
+//loaded category wise news 
 function categoryWiseNews(categoryID) {
   toggleSpinner(true);
   fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
@@ -35,11 +40,15 @@ function categoryWiseNews(categoryID) {
 
 
 }
+
+// loaded detailed news for modal
 const loadDetailedNews = (newsId) => {
   fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
     .then(res => res.json())
     .then(data => displayDetailedNews(data.data[0]))
 }
+
+// in modal, display detailed news
 const displayDetailedNews = (detailNews) => {
   const modalTitle = document.getElementById('staticBackdropLabel');
   modalTitle.innerText = `${detailNews.title}`;
@@ -62,7 +71,14 @@ const displayDetailedNews = (detailNews) => {
               </div>
           `;
 }
+
+// category wise news display in UI
 const displaycategoryWiseNews = (singleNewsCategory) => {
+  
+    singleNewsCategory.sort((a, b) => {
+      return b.total_view - a.total_view;
+    });
+  
   const newsCategoryContainer = document.getElementById('news-category-container');
   const singleNewsCategoryCounter = document.getElementById('news-counter');
   singleNewsCategoryCounter.innerHTML = `
@@ -82,6 +98,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
 
   singleNewsCategory.forEach(news => {
 
+    
     const newsDiv = document.createElement('div');
 
 
@@ -123,6 +140,8 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
   toggleSpinner(false);
 
 }
+
+// spinner function
 function toggleSpinner(isSpinning) {
   const spinning = document.getElementById('spinner');
   if (isSpinning) {
