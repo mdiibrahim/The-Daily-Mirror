@@ -4,14 +4,14 @@ const allNews = async () => {
   try {
     const res = await fetch(`https://openapi.programming-hero.com/api/news/categories`);
     const data = await res.json();
-    
-  navigateNews(data.data.news_category)
+
+    navigateNews(data.data.news_category)
   }
-  
-  catch(error) {
-    document.write(error)
+
+  catch (error) {
+    document.write("Cann't get the url", error);
   }
-  
+
 }
 
 allNews();
@@ -42,18 +42,29 @@ function navigateNews(allNewsCategories) {
 //loaded category wise news 
 function categoryWiseNews(categoryID) {
   toggleSpinner(true);
-  fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
-    .then(res => res.json())
-    .then(data => displaycategoryWiseNews(data.data))
+  try {
+    fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
+      .then(res => res.json())
+      .then(data => displaycategoryWiseNews(data.data))
+  }
+  catch (error) {
+    document.write("Cann't get the url", error);
+  }
 
 
 }
 
 // loaded detailed news for modal
 const loadDetailedNews = (newsId) => {
-  fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
-    .then(res => res.json())
-    .then(data => displayDetailedNews(data.data[0]))
+  try {
+    fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
+      .then(res => res.json())
+      .then(data => displayDetailedNews(data.data[0]))
+  }
+
+  catch (error) {
+    document.write("Cann't get the url", error);
+  }
 }
 
 // in modal, display detailed news
@@ -71,7 +82,7 @@ const displayDetailedNews = (detailNews) => {
                     <p>Published: ${detailNews.author.published_date ? detailNews.author.published_date : 'Unavailable'}</p>
                   </div>
                   <div class="col-4">
-                  <p> ${detailNews.total_view ?'<i class="fa fa-eye"></i> '+ detailNews.total_view : '<i class="fa fa-eye-slash"></i> No views'}</p>
+                  <p> ${detailNews.total_view ? '<i class="fa fa-eye"></i> ' + detailNews.total_view : '<i class="fa fa-eye-slash"></i> No views'}</p>
                   </div>
                   <div class="col-4">
                     <p>Ratings: ${detailNews.rating.number ? detailNews.rating.number : 'Unavailable'}</p>
@@ -82,11 +93,11 @@ const displayDetailedNews = (detailNews) => {
 
 // category wise news display in UI
 const displaycategoryWiseNews = (singleNewsCategory) => {
-  
-    singleNewsCategory.sort((a, b) => {
-      return b.total_view - a.total_view;
-    });
-  
+
+  singleNewsCategory.sort((a, b) => {
+    return b.total_view - a.total_view;
+  });
+
   const newsCategoryContainer = document.getElementById('news-category-container');
   const singleNewsCategoryCounter = document.getElementById('news-counter');
   singleNewsCategoryCounter.innerHTML = `
@@ -106,7 +117,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
 
   singleNewsCategory.forEach(news => {
 
-    
+
     const newsDiv = document.createElement('div');
 
 
@@ -127,7 +138,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
                     <p>Published: ${news.author.published_date ? news.author.published_date.slice(0, 11) : 'Unavailable'}</p>
                   </div>
                   <div class="col-3">
-                    <p> ${news.total_view ?'<i class="fa fa-eye"></i> '+ news.total_view : '<i class="fa fa-eye-slash"></i> No views'}</p>
+                    <p> ${news.total_view ? '<i class="fa fa-eye"></i> ' + news.total_view : '<i class="fa fa-eye-slash"></i> No views'}</p>
                   </div>
                   <div class="col-3">
                     <p>Ratings: ${news.rating.number ? news.rating.number : 'Unavailable'}</p>
