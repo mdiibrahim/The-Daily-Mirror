@@ -4,7 +4,6 @@ const allNews = async () => {
   try {
     const res = await fetch(`https://openapi.programming-hero.com/api/news/categories`);
     const data = await res.json();
-
     navigateNews(data.data.news_category)
   }
 
@@ -42,7 +41,7 @@ function navigateNews(allNewsCategories) {
 //loaded category wise news 
 function categoryWiseNews(categoryID) {
   toggleSpinner(true);
- 
+
   fetch(`https://openapi.programming-hero.com/api/news/category/${categoryID}`)
     .then(res => res.json())
     .then(data => displaycategoryWiseNews(data.data))
@@ -53,11 +52,11 @@ function categoryWiseNews(categoryID) {
 
 // loaded detailed news for modal
 const loadDetailedNews = (newsId) => {
- 
-    fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
-      .then(res => res.json())
-      .then(data => displayDetailedNews(data.data[0]))
-      .catch(error => document.write("Cann't get the url: ", error));
+
+  fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
+    .then(res => res.json())
+    .then(data => displayDetailedNews(data.data[0]))
+    .catch(error => document.write("Cann't get the url: ", error));
 }
 
 // in modal, display detailed news
@@ -70,8 +69,7 @@ const displayDetailedNews = (detailNews) => {
   <p>${detailNews.details}</p>
   <div class="row justify-content-center align-items-center">
                   <div class="col-4">
-               <img src="${detailNews.author.img}" class="w-25 rounded-5 img-fluid" alt="">
-                  <p>Author: ${detailNews.author.name ? detailNews.author.name : 'Anonymous'}</p>
+                  <p> <img src="${detailNews.author.img}" class="w-25 rounded-5 img-fluid" alt=""> Author: ${detailNews.author.name ? detailNews.author.name : 'Unavailable'}</p>
                     <p>Published: ${detailNews.author.published_date ? detailNews.author.published_date : 'Unavailable'}</p>
                   </div>
                   <div class="col-4">
@@ -117,26 +115,25 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
     newsDiv.innerHTML = `
         <div class="card mb-3 shadow p-3 mb-5 bg-body rounded">
         <div class="row g-0">
-          <div class="col-md-3">
-            <img src="${news.thumbnail_url}" class="img-fluid rounded-start" alt="...">
+          <div class="col-md-3 col-12">
+            <img src="${news.thumbnail_url}" class="img-fluid  w-100 rounded-start" alt="...">
           </div>
-          <div class="col-md-9">
+          <div class="col-md-9 col-12">
             <div class="card-body">
               <h5 class="card-title">${news.title}</h5>
               <p class="card-text news-details p-2">${news.details}</p>
               <div class="card-text row justify-content-center align-items-center">
-                  <div class="col-3">
-               <img src="${news.author.img}" class="w-25 rounded-5 img-fluid" alt="">
-                  <p>Author: ${news.author.name ? news.author.name : 'Anonymous'}</p>
-                    <p>Published: ${news.author.published_date ? news.author.published_date.slice(0, 11) : 'Unavailable'}</p>
+                  <div class="col-6 col-md-3">
+               
+                  <p> <img src="${news.author.img}" class="w-25 rounded-5 img-fluid" alt=""> Author: ${news.author.name ? news.author.name : 'Unavailable'}</p>
                   </div>
-                  <div class="col-3">
+                  <div class="col-6 col-md-3">
                     <p> ${news.total_view ? '<i class="fa fa-eye"></i> ' + news.total_view : '<i class="fa fa-eye-slash"></i> No views'}</p>
                   </div>
-                  <div class="col-3">
+                  <div class="col-6 col-md-3">
                     <p>Ratings: ${news.rating.number ? news.rating.number : 'Unavailable'}</p>
                   </div>
-                  <div class="col-3">
+                  <div class="col-6 col-md-3">
                     <button onclick="loadDetailedNews('${news._id}')" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Continue...<i class="fa fa-circle-right"></i></button>
                   </div>
               </div>
