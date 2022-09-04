@@ -1,9 +1,17 @@
 // The news api loaded
 
 const allNews = async () => {
-  const res = await fetch(`https://openapi.programming-hero.com/api/news/categories`);
-  const data = await res.json();
+  try {
+    const res = await fetch(`https://openapi.programming-hero.com/api/news/categories`);
+    const data = await res.json();
+    
   navigateNews(data.data.news_category)
+  }
+  
+  catch(error) {
+    document.write(error)
+  }
+  
 }
 
 allNews();
@@ -63,7 +71,7 @@ const displayDetailedNews = (detailNews) => {
                     <p>Published: ${detailNews.author.published_date ? detailNews.author.published_date : 'Unavailable'}</p>
                   </div>
                   <div class="col-4">
-                    <p>Views: ${detailNews.total_view ? detailNews.total_view : 'No views'}</p>
+                  <p> ${detailNews.total_view ?'<i class="fa fa-eye"></i> '+ detailNews.total_view : '<i class="fa fa-eye-slash"></i> No views'}</p>
                   </div>
                   <div class="col-4">
                     <p>Ratings: ${detailNews.rating.number ? detailNews.rating.number : 'Unavailable'}</p>
@@ -103,7 +111,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
 
 
     newsDiv.innerHTML = `
-        <div class="card mb-3 shadow mb-5 bg-body rounded">
+        <div class="card mb-3 shadow p-3 mb-5 bg-body rounded">
         <div class="row g-0">
           <div class="col-md-3">
             <img src="${news.thumbnail_url}" class="img-fluid rounded-start" alt="...">
@@ -119,7 +127,7 @@ const displaycategoryWiseNews = (singleNewsCategory) => {
                     <p>Published: ${news.author.published_date ? news.author.published_date.slice(0, 11) : 'Unavailable'}</p>
                   </div>
                   <div class="col-3">
-                    <p>Views: ${news.total_view ? news.total_view : 'No views'}</p>
+                    <p> ${news.total_view ?'<i class="fa fa-eye"></i> '+ news.total_view : '<i class="fa fa-eye-slash"></i> No views'}</p>
                   </div>
                   <div class="col-3">
                     <p>Ratings: ${news.rating.number ? news.rating.number : 'Unavailable'}</p>
