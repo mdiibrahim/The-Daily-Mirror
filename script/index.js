@@ -85,6 +85,7 @@ const displayDetailedNews = (detailNews) => {
 // category wise news display in UI
 const displaycategoryWiseNews = (singleNewsCategory) => {
 
+  // for news sorting by views
   singleNewsCategory.sort((a, b) => {
     return b.total_view - a.total_view;
   });
